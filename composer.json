@@ -1,0 +1,21 @@
+{
+  "name": "riste/repository",
+  "version": "1.0",
+  "description": "Allow you to easily cache laravel models and retrieve from laravel's cache",
+  "autoload": {
+    "psr-4": {
+      "Riste\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Riste\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "laravel/laravel": "12.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  }
+}
