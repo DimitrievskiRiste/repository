@@ -3,6 +3,11 @@ namespace Riste;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * Class for model cache using build in laravel cache mechanism.
+ * Since laravel eloquent automatically serializes and deserializes when setting them in cache,
+ * there are no needs of serializing here.
+ */
 abstract class AbstractRepository implements IRepository
 {
     public abstract function getKey(): string;
