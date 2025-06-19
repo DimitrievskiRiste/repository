@@ -1,6 +1,6 @@
 {
   "name": "riste/repository",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Allow you to easily cache laravel models and retrieve from laravel's cache by extending AbstractRepository",
   "autoload": {
     "psr-4": {
