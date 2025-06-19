@@ -16,6 +16,12 @@
     "laravel/laravel": ">=12",
     "php": ">=8.3"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/DimitrievskiRiste/repository"
+    }
+  ],
   "require-dev": {
     "phpunit/phpunit": "*"
   }
