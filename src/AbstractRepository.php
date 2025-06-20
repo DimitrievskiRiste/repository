@@ -37,7 +37,8 @@ abstract class AbstractRepository implements IRepository
     public function addOrUpdate(\Illuminate\Database\Eloquent\Model $model, int $ttl = 3600): void
     {
         $items = Cache::get($this->getKey(), []);
-        if($this->itemExist($model->getKeyName(),$model->getKey())){
+        $value = $model->getKey() ?? "test_";
+        if($this->itemExist($model->getKeyName(),$value)){
             array_walk($items, function(&$value, $key) use($model){
                 if($value instanceof Model){
                     if($value->getKey() == $model->getKey()){
