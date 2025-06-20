@@ -19,10 +19,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/uri-template" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/framework" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/laravel" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/prompts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/serializable-closure" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/tinker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/commonmark" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/config" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/flysystem" />
@@ -54,7 +52,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/http-message" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ralouphie/getallheaders" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/collection" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ramsey/uuid" />

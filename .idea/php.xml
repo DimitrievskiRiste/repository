@@ -53,7 +53,6 @@
       <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
       <path value="$PROJECT_DIR$/vendor/nunomaduro/termwind" />
-      <path value="$PROJECT_DIR$/vendor/psy/psysh" />
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/vendor/phar-io/version" />
       <path value="$PROJECT_DIR$/vendor/phar-io/manifest" />
@@ -70,8 +69,6 @@
       <path value="$PROJECT_DIR$/vendor/graham-campbell/result-type" />
       <path value="$PROJECT_DIR$/vendor/nesbot/carbon" />
       <path value="$PROJECT_DIR$/vendor/laravel/prompts" />
-      <path value="$PROJECT_DIR$/vendor/laravel/laravel" />
-      <path value="$PROJECT_DIR$/vendor/laravel/tinker" />
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
       <path value="$PROJECT_DIR$/vendor/laravel/serializable-closure" />
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
