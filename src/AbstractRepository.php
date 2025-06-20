@@ -15,22 +15,23 @@ abstract class AbstractRepository implements IRepository
     public function itemExist(string $column, string|int $value): bool
     {
         $items = $this->get();
-        if(count($items) > 0 ){
-            foreach($items as $key => $item){
-                if($item instanceof Model){
-                    if(property_exists($item,$column) && $item->$column == $value){
+        if(empty($items)){
+            return false;
+        }
+        foreach($items as $key => $item) {
+            if($item instanceof Model){
+                if($item->isFillable($column)){
+                    if($item->$column == $value){
                         return true;
                     }
                 }
             }
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
     public function get()
     {
-        return Cache::get($this->get(), []);
+        return Cache::get($this->getKey(), []);
     }
 
     public function addOrUpdate(\Illuminate\Database\Eloquent\Model $model, int $ttl = 3600): void
