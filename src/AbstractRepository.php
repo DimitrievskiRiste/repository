@@ -49,18 +49,18 @@ abstract class AbstractRepository implements IRepository
             Cache::set($this->getKey(),$items,NOW()->addHours($ttl));
         } else {
             $key = sizeof($items)+1;
-            array_push($items,[$key => $model]);
+            array_push($items,$model);
             Cache::set($this->getKey(),$items,NOW()->addHours($ttl));
         }
 
     }
-    public function findWhere(string $column, string $needle)
+    public function findWhere(string $column, string $needle) :Model|null
     {
         $items = $this->get();
-        if(sizeof($items) > 0 ){
+        if(!empty($items)){
             foreach($items as $key => $item){
                 if($item instanceof Model) {
-                    if(property_exists($item, $column) && $item->$column == $needle) {
+                    if($item->isFillable($column) && $item->$column == $needle) {
                         return $item;
                     }
                 }
@@ -69,5 +69,25 @@ abstract class AbstractRepository implements IRepository
         } else {
             return null;
         }
+    }
+    public function findMany(array $criteries): array
+    {
+        $items = [];
+        $collections = $this->get();
+        if(!empty($collections)){
+            foreach ($criteries as $key => $value) {
+                array_walk($collections, function($collection, $collectionKey) use($key, $value, &$items) {
+                   if(is_object($collection) && $collection instanceof Model){
+                       if($collection->isFillable($key)) {
+                           if(stripos($collection->$key, $value) !== false){
+                               array_push($items, $collection);
+                           }
+                       }
+                   }
+                });
+            }
+            return $items;
+        }
+        return $items;
     }
 }
