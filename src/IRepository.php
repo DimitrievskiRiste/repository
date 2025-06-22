@@ -45,4 +45,12 @@ interface IRepository
      * @return bool
      */
     public function itemExist(string $column, string|int $value) :bool;
+
+    /**
+     * Find many items from cache by given criteria.
+     * Example: ["username" => "test", "name" => "Riste"]
+     * @param array $criteries
+     * @return array
+     */
+    public function findMany(array $criteries) :array;
 }
