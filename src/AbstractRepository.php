@@ -48,7 +48,6 @@ abstract class AbstractRepository implements IRepository
             });
             Cache::set($this->getKey(),$items,NOW()->addHours($ttl));
         } else {
-            $key = sizeof($items)+1;
             array_push($items,$model);
             Cache::set($this->getKey(),$items,NOW()->addHours($ttl));
         }
@@ -85,6 +84,28 @@ abstract class AbstractRepository implements IRepository
                        }
                    }
                 });
+            }
+            return $items;
+        }
+        return $items;
+    }
+
+    /**
+     * Paginate items from stored cache
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function paginate(int $offset, int $limit) :array {
+        $items = [];
+        $collections = $this->get();
+        if(!empty($collections)){
+            $calc = $limit + $offset;
+            for($offset; $offset < $calc; $offset++)
+            {
+                if(array_key_exists($offset, $collections)){
+                    array_push($items, $collections[$offset]);
+                }
             }
             return $items;
         }
