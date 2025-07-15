@@ -53,4 +53,19 @@ interface IRepository
      * @return array
      */
     public function findMany(array $criteries) :array;
+    /**
+     * Paginate items from stored cache
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function paginate(int $offset, int $limit) :array;
+
+    /**
+     * Find item in cache by column and needed value and removes it from the cache!
+     * @param string $column
+     * @param string $needle
+     * @return void
+     */
+    public function removeItem(string $column, string $needle) :void;
 }

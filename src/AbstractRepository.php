@@ -18,16 +18,9 @@ abstract class AbstractRepository implements IRepository
         if(empty($items)){
             return false;
         }
-        foreach($items as $key => $item) {
-            if($item instanceof Model){
-                if($item->isFillable($column)){
-                    if($item->$column == $value){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        $modelColumn = array_column($column, $items);
+        $key = array_search($value, $modelColumn);
+        return array_key_exists($key, $items);
     }
     public function get()
     {
@@ -57,17 +50,14 @@ abstract class AbstractRepository implements IRepository
     {
         $items = $this->get();
         if(!empty($items)){
-            foreach($items as $key => $item){
-                if($item instanceof Model) {
-                    if($item->isFillable($column) && $item->$column == $needle) {
-                        return $item;
-                    }
-                }
+            $modelColumn = array_column($items, $column);
+            $key = array_search($needle, $modelColumn);
+            if(array_key_exists($key)){
+                return $items[$key];
             }
             return null;
-        } else {
-            return null;
         }
+        return null;
     }
     public function findMany(array $criteries): array
     {
@@ -75,27 +65,18 @@ abstract class AbstractRepository implements IRepository
         $collections = $this->get();
         if(!empty($collections)){
             foreach ($criteries as $key => $value) {
-                array_walk($collections, function($collection, $collectionKey) use($key, $value, &$items) {
-                   if(is_object($collection) && $collection instanceof Model){
-                       if($collection->isFillable($key)) {
-                           if(stripos($collection->$key, $value) !== false){
-                               array_push($items, $collection);
-                           }
-                       }
-                   }
-                });
+                $column = array_column($key, $collections);
+                $key = array_search($value,$column);
+                if(array_key_exists($collections)){
+                    array_push($items,$collections[$key]);
+                }
             }
             return $items;
         }
         return $items;
     }
 
-    /**
-     * Paginate items from stored cache
-     * @param int $offset
-     * @param int $limit
-     * @return array
-     */
+
     public function paginate(int $offset, int $limit) :array {
         $items = [];
         $collections = $this->get();
@@ -110,5 +91,17 @@ abstract class AbstractRepository implements IRepository
             return $items;
         }
         return $items;
+    }
+    public function removeItem(string $column, string $needle): void
+    {
+        $items = $this->get();
+        if(!empty($items)){
+            $column = array_column($items, $column);
+            $key = array_search($needle, $column);
+            if(array_key_exists($key, $items)){
+                unset($items[$key]);
+                Cache::set($this->getKey(),$items, now()->addDays(30));
+            }
+        }
     }
 }
