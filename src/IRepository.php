@@ -68,4 +68,12 @@ interface IRepository
      * @return void
      */
     public function removeItem(string $column, string $needle) :void;
+
+    /**
+     * Find all keys by the given array with column and values
+     * Example would be  ["username" => "test"] column will be username and value test.
+     * @param array $criteria
+     * @return array
+     */
+    public function findAllKeys(array $criteria) :array;
 }
