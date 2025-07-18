@@ -18,7 +18,7 @@ abstract class AbstractRepository implements IRepository
         if(empty($items)){
             return false;
         }
-        $modelColumn = array_column($column, $items);
+        $modelColumn = array_column($items, $column);
         $key = array_search($value, $modelColumn);
         return array_key_exists($key, $items);
     }
@@ -27,24 +27,16 @@ abstract class AbstractRepository implements IRepository
         return Cache::get($this->getKey(), []);
     }
 
-    public function addOrUpdate(\Illuminate\Database\Eloquent\Model $model, int $ttl = 3600): void
+    public function addOrUpdate(Model $model, int $ttl = 3600): void
     {
         $items = Cache::get($this->getKey(), []);
         $value = $model->getKey() ?? "test_";
-        if($this->itemExist($model->getKeyName(),$value)){
-            array_walk($items, function(&$value, $key) use($model){
-                if($value instanceof Model){
-                    if($value->getKey() == $model->getKey()){
-                        $value = $model;
-                    }
-                }
-            });
-            Cache::set($this->getKey(),$items,NOW()->addHours($ttl));
-        } else {
-            array_push($items,$model);
-            Cache::set($this->getKey(),$items,NOW()->addHours($ttl));
+        $primaryKeyName = $model->getKeyName();
+        $keys = $this->findAllKeys([[$primaryKeyName => $value]]);
+        foreach($keys as $key) {
+            $items[$key] = $model;
         }
-
+        Cache::set($this->getKey(), $items, NOW()->addDays(30));
     }
     public function findWhere(string $column, string $needle) :Model|null
     {
@@ -52,7 +44,7 @@ abstract class AbstractRepository implements IRepository
         if(!empty($items)){
             $modelColumn = array_column($items, $column);
             $key = array_search($needle, $modelColumn);
-            if(array_key_exists($key)){
+            if(array_key_exists($key, $items)){
                 return $items[$key];
             }
             return null;
@@ -62,16 +54,10 @@ abstract class AbstractRepository implements IRepository
     public function findMany(array $criteries): array
     {
         $items = [];
-        $collections = $this->get();
-        if(!empty($collections)){
-            foreach ($criteries as $key => $value) {
-                $column = array_column($key, $collections);
-                $key = array_search($value,$column);
-                if(array_key_exists($collections)){
-                    array_push($items,$collections[$key]);
-                }
-            }
-            return $items;
+        $keys = $this->findAllKeys($criteries);
+        foreach($keys as $key)
+        {
+            $items[] = $this->get()[$key];
         }
         return $items;
     }
@@ -85,7 +71,7 @@ abstract class AbstractRepository implements IRepository
             for($offset; $offset < $calc; $offset++)
             {
                 if(array_key_exists($offset, $collections)){
-                    array_push($items, $collections[$offset]);
+                    $items[] = $collections[$offset];
                 }
             }
             return $items;
@@ -103,5 +89,24 @@ abstract class AbstractRepository implements IRepository
                 Cache::set($this->getKey(),$items, now()->addDays(30));
             }
         }
+    }
+    public function findAllKeys(array $criteria): array
+    {
+        $items = $this->get();
+        $data = [];
+        foreach($criteria as $keys) {
+            foreach($keys as $column => $value) {
+                $itemKey = array_find_key($items, function($item) use($column, $value) {
+                   if($item instanceof Model){
+                       return (stripos($item->$column, $value) !== false);
+                   }
+                   return null;
+                });
+                if(!is_null($itemKey)){
+                    array_push($data);
+                }
+            }
+        }
+        return $data;
     }
 }
