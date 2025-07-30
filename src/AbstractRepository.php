@@ -63,9 +63,13 @@ abstract class AbstractRepository implements IRepository
     }
 
 
-    public function paginate(int $offset, int $limit) :array {
+    public function paginate(int $offset, int $limit, array $data =[]) :array {
         $items = [];
-        $collections = $this->get();
+        if(empty($data)) {
+            $collections = $this->get();
+        } else {
+            $collections = $data;
+        }
         if(!empty($collections)){
             $calc = $limit + $offset;
             for($offset; $offset < $calc; $offset++)
