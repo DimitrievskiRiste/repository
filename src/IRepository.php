@@ -54,12 +54,14 @@ interface IRepository
      */
     public function findMany(array $criteries) :array;
     /**
-     * Paginate items from stored cache
+     * Paginate items from stored cache. If third parameter is specified, it will paginate from that data. Useful
+     * if you want to filter some data.
      * @param int $offset
      * @param int $limit
+     * @param array $data
      * @return array
      */
-    public function paginate(int $offset, int $limit) :array;
+    public function paginate(int $offset, int $limit, array $data = []) :array;
 
     /**
      * Find item in cache by column and needed value and removes it from the cache!
