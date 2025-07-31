@@ -14,7 +14,7 @@ abstract class AbstractRepository implements IRepository
     public abstract function setKey(string $key): void;
     public function itemExist(string $column, string|int $value): bool
     {
-        $items = $this->get();
+        $items = self::get();
         if(empty($items)){
             return false;
         }
@@ -24,7 +24,7 @@ abstract class AbstractRepository implements IRepository
     }
     public function get()
     {
-        return Cache::get($this->getKey(), []);
+        return Cache::get(self::getKey(), []);
     }
 
     public function addOrUpdate(Model $model, int $ttl = 3600): void
@@ -32,7 +32,7 @@ abstract class AbstractRepository implements IRepository
         $items = Cache::get($this->getKey(), []);
         $value = $model->getKey() ?? "test_";
         $primaryKeyName = $model->getKeyName();
-        $keys = $this->findAllKeys([[$primaryKeyName => $value]]);
+        $keys = self::findAllKeys([[$primaryKeyName => $value]]);
         foreach($keys as $key) {
             $items[$key] = $model;
         }
@@ -40,7 +40,7 @@ abstract class AbstractRepository implements IRepository
     }
     public function findWhere(string $column, string $needle) :Model|null
     {
-        $items = $this->get();
+        $items = self::get();
         if(!empty($items)){
             $modelColumn = array_column($items, $column);
             $key = array_search($needle, $modelColumn);
@@ -54,10 +54,10 @@ abstract class AbstractRepository implements IRepository
     public function findMany(array $criteries): array
     {
         $items = [];
-        $keys = $this->findAllKeys($criteries);
+        $keys = self::findAllKeys($criteries);
         foreach($keys as $key)
         {
-            $items[] = $this->get()[$key];
+            $items[] = self::get()[$key];
         }
         return $items;
     }
@@ -66,7 +66,7 @@ abstract class AbstractRepository implements IRepository
     public function paginate(int $offset, int $limit, array $data =[]) :array {
         $items = [];
         if(empty($data)) {
-            $collections = $this->get();
+            $collections = self::get();
         } else {
             $collections = $data;
         }
@@ -84,7 +84,7 @@ abstract class AbstractRepository implements IRepository
     }
     public function removeItem(string $column, string $needle): void
     {
-        $items = $this->get();
+        $items = self::get();
         if(!empty($items)){
             $column = array_column($items, $column);
             $key = array_search($needle, $column);
@@ -96,7 +96,7 @@ abstract class AbstractRepository implements IRepository
     }
     public function findAllKeys(array $criteria): array
     {
-        $items = $this->get();
+        $items = self::get();
         $data = [];
         foreach($criteria as $keys) {
             foreach($keys as $column => $value) {
