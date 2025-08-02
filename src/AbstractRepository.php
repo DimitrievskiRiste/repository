@@ -29,6 +29,7 @@ abstract class AbstractRepository implements IRepository
 
     public function addOrUpdate(Model $model, int $ttl = 3600): void
     {
+        // using class instance
         $items = Cache::get($this->getKey(), []);
         $value = $model->getKey() ?? "test_";
         $primaryKeyName = $model->getKeyName();
