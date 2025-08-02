@@ -29,7 +29,7 @@ abstract class AbstractRepository implements IRepository
 
     public function addOrUpdate(Model $model, int $ttl = 3600): void
     {
-        $items = Cache::get(self::getKey(), []);
+        $items = Cache::get($this->getKey(), []);
         $value = $model->getKey() ?? "test_";
         $primaryKeyName = $model->getKeyName();
         $keys = self::findAllKeys([[$primaryKeyName => $value]]);
