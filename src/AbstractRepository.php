@@ -32,7 +32,7 @@ abstract class AbstractRepository implements IRepository
     {
         // using class instance
         $items = Cache::get($this->getKey(), []);
-        $value = $model->getKey() ?? "test_";
+        $value = $model->getKey();
         $primaryKeyName = $model->getKeyName();
         $keys = self::findAllKeys([[$primaryKeyName => $value]]);
         foreach($keys as $key) {
@@ -109,7 +109,7 @@ abstract class AbstractRepository implements IRepository
                    return null;
                 });
                 if(!is_null($itemKey)){
-                    array_push($data);
+                    array_push($data, $itemKey);
                 }
             }
         }
