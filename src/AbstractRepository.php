@@ -24,7 +24,7 @@ abstract class AbstractRepository implements IRepository
     }
     public function get()
     {
-        $data = Cache::get($this->getKey());
+        $data = Cache::get($this->getKey(),[]);
         return $data;
     }
 
