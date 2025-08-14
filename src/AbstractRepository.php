@@ -24,7 +24,14 @@ abstract class AbstractRepository implements IRepository
     }
     public function get()
     {
-        return Cache::get($this->getKey(), []);
+        $items = Cache::get($this->getKey(), []);
+        $data = [];
+        if(!empty($items)){
+            foreach($items as $key => $item) {
+                $data[$key] = unserialize(base64_decode($item));
+            }
+        }
+        return $data;
     }
 
     public function addOrUpdate(Model $model, int $ttl = 3600): void
@@ -35,7 +42,7 @@ abstract class AbstractRepository implements IRepository
         $primaryKeyName = $model->getKeyName();
         $keys = self::findAllKeys([[$primaryKeyName => $value]]);
         foreach($keys as $key) {
-            $items[$key] = $model;
+            $items[$key] = base64_encode(serialize($model));
         }
         Cache::set($this->getKey(), $items, NOW()->addDays(30));
     }
