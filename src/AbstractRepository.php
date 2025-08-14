@@ -38,7 +38,7 @@ abstract class AbstractRepository implements IRepository
         foreach($keys as $key) {
             $items[$key] = $model;
         }
-        Cache::set($this->getKey(), $items, NOW()->addDays(30));
+        Cache::put($this->getKey(), $items, NOW()->addDays(30));
     }
     public function findWhere(string $column, string $needle) :Model|null
     {
