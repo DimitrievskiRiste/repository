@@ -35,8 +35,13 @@ abstract class AbstractRepository implements IRepository
         $value = $model->getKey();
         $primaryKeyName = $model->getKeyName();
         $keys = self::findAllKeys([[$primaryKeyName => $value]]);
-        foreach($keys as $key) {
-            $items[$key] = $model;
+        if(!empty($keys)){
+            foreach($keys as $key) {
+                $items[$key] = $model;
+            }
+        } else {
+            // just add the item, item not exist in cache
+            $items[] = $model;
         }
         Cache::put($this->getKey(), $items, NOW()->addDays(30));
     }
