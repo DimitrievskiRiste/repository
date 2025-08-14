@@ -98,7 +98,7 @@ abstract class AbstractRepository implements IRepository
     }
     public function findAllKeys(array $criteria): array
     {
-        $items = self::get();
+        $items = $this->get();
         $data = [];
         foreach($criteria as $keys) {
             foreach($keys as $column => $value) {
