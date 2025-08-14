@@ -24,11 +24,8 @@ abstract class AbstractRepository implements IRepository
     }
     public function get()
     {
-        $encoded = Cache::get($this->getKey());
-        if(!$encoded) {
-            return [];
-        }
-        return unserialize(base64_decode($encoded));
+        $data = Cache::get($this->getKey());
+        return $data;
     }
 
     public function addOrUpdate(Model $model, int $ttl = 3600): void
@@ -41,8 +38,7 @@ abstract class AbstractRepository implements IRepository
         foreach($keys as $key) {
             $items[$key] = $model;
         }
-        $encodedData = base64_encode(serialize($items));
-        Cache::set($this->getKey(), $encodedData, NOW()->addDays(30));
+        Cache::set($this->getKey(), $items, NOW()->addDays(30));
     }
     public function findWhere(string $column, string $needle) :Model|null
     {
